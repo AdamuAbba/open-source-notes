@@ -9,15 +9,11 @@ The goal of this article is to help you
 - mine some blocks to that address
 - configure two Lightening nodes
 
-# 📜 Introduction
+# Introduction
 
-This was me after I recently started my journey in Bitcoin development.
+When I recently started my journey in Bitcoin development, I felt so overwhelmed by the resources online mainly because I found out that certain information where either left out or now deprecated. so I was inspired to write my take on this topic because it confused me the most.
 
-![angry](https://media.giphy.com/media/afqT2ykIlYcVi/giphy.gif?cid=ecf05e47j8wet4t6lgdg0wahl8e83e22teodlk1cyqxmu51u&ep=v1_gifs_search&rid=giphy.gif&ct=g)
-
-I felt so overwhelmed by the resources online mainly because I found out that certain information where either left out or now deprecated. so I was inspired to write my take on this topic because it confused me the most.
-
-# 📜 Requirements
+# Requirements
 
 To be able to follow along, you must have both [bitcoind](https://github.com/bitcoin/bitcoin) and [lnd](https://github.com/lightningnetwork/lnd) installed.
 
@@ -30,7 +26,7 @@ Their work heavily inspires this article and has made use of references appropri
 | [Peter Tyonum](https://dev.to/tvpeter)                                                                              | [How to Setup Bitcoin Core and Lightning Network Node Developer Environment](https://dev.to/tvpeter/how-to-setup-bitcoin-core-and-lightning-network-node-developer-environment-3lil) | Start here   |
 | [Michael Goldstein](https://medium.com/@bitstein?source=post_page-----ab967167594a--------------------------------) | [Setting Up a Bitcoin/Lightning Network Test Environment](https://medium.com/@bitstein/setting-up-a-bitcoin-lightning-network-test-environment-ab967167594a)                         | Go here next |
 
-**⚙️ My system specs**
+**My system specs**
 
 - Machine: MacBook Pro
 - Operating System: macOS Monterey
@@ -39,9 +35,7 @@ Their work heavily inspires this article and has made use of references appropri
 - Editor: Neovim
 - Package Manager: [Homebrew](https://brew.sh/)
 
-**📜 The boring but very important stuff**
-
-![rick sleeping](https://media.giphy.com/media/FPnjfwDsasfp9pz0d0/giphy.gif?cid=ecf05e47exfrojy6gh0sjqtulw21a6ki0x6pi40miu7o0q7m&ep=v1_gifs_search&rid=giphy.gif&ct=g)
+**The boring but very important stuff**
 
 Before we get to copying and pasting stuff into our terminal(the fun part), let's look at what the internet has to say about the following:
 
@@ -50,23 +44,21 @@ Before we get to copying and pasting stuff into our terminal(the fun part), let'
 
 > "The Lightning Network is a second-layer protocol built on top of the Bitcoin blockchain. It enables faster and cheaper transactions by creating off-chain payment channels between users. These channels allow multiple transactions to occur without needing to be recorded on the main Bitcoin blockchain. Instead, only the opening and closing transactions of the channel are settled on the blockchain. This interaction reduces congestion on the Bitcoin network and enables microtransactions with almost instant settlement times."
 
-**📡 The Bitcoin testnet network mode**
+**The Bitcoin testnet network mode**
 
 > _"It’s a public test blockchain where the bitcoin does not have a real-world value that works similarly to the mainnet blockchain. In this way, it is safe to test out some functionality."_ **_source:_** [**_https://studygroup.moralis.io/_**](https://studygroup.moralis.io/t/bitcoin-testnet-vs-regtest-reading-assignment/7914/2#:~:text=Apr%20%2719-,What%20is%20testnet%20in%20Bitcoin,-%3F%0Ait%E2%80%99s%20a)
 
-**📡 The Bitcoin regtest network mode** 👈🏿 (this is the mode we are going to be using)
+**The Bitcoin regtest network mode** (this is the mode we are going to be using)
 
 > \*"Regtest (regression test) mode creates a local private blockchain where you can adjust the parameters to what you want. You usually use this when it is not needed to communicate with other peers and blocks. An example of what you can do with the parameters is you can create blocks instantly"\***_Source:_** [**_https://studygroup.moralis.io/_**](https://studygroup.moralis.io/t/bitcoin-testnet-vs-regtest-reading-assignment/7914/2#:~:text=Apr%20%2719-,What%20is%20testnet%20in%20Bitcoin,-%3F%0Ait%E2%80%99s%20a)
 
-**📡 The Bitcoin signet network mode**
+**The Bitcoin signet network mode**
 
 > \*"Signet is a proposed new test network parallel to the Bitcoin network. Like testnet and regtest, developers would use signet as a testing environment. Unlike the Bitcoin mainnet or the other test networks, signet would use digital signatures to validate blocks, not a Proof-of-Work system."\***_Source:_** [**_https://river.com/_**](https://river.com/learn/terms/s/signet/#:~:text=Signet%20is%20a%20proposed%20new%20test%20network%20parallel%20to%20the%20Bitcoin%20network.%20Like%20testnet%20and%20regtest%2C%20signet%20would%20be%20used%20by%20developers%20as%20a%20testing%20environment.%20Unlike%20the%20Bitcoin%20mainnet%20or%20the%20other%20test%20networks%2C%20signet%20would%20use%20digital%20signatures%20to%20validate%20blocks%2C%20not%20a%20Proof%2Dof%2DWork%20system.)
 
 **Now to the good stuff:**
 
-**⚙️ Configuring our Bitcoin environment**
-
-![](https://media.giphy.com/media/1xbsuLrL6IycM/giphy.gif?cid=ecf05e47xaj6tqf4ifr0s3viwt6vmygen0nv0tpi3soopzi4&ep=v1_gifs_search&rid=giphy.gif&ct=g)
+**Configuring our Bitcoin environment**
 
 **Step 1a**
 
@@ -133,7 +125,7 @@ $ bitcoin-cli  getblockchaininfo
 
 ```json
 {
-  "chain": "regtest",  // 👈🏿 just making sure we are on the 'regtest' network
+  "chain": "regtest",  // just making sure we are on the 'regtest' network
   "blocks": 526,
   "headers": 526,
 ...
@@ -165,7 +157,7 @@ $ bitcoin-cli getnewaddress -addresstype legacy
 **output**
 
 ```plaintext
-mhF5zQHNn7wzaaQTpzRmtsNgPgFF94fxeY  //👈🏿 yours will be different
+mhF5zQHNn7wzaaQTpzRmtsNgPgFF94fxeY  // yours will be different
 ```
 
 _Assign a label to the address generated above to make it easy to identify it_
@@ -247,7 +239,7 @@ $ bitcoin-cli getwalletinfo
 }
 ```
 
-**⚙️ Configuring two LND nodes**
+**Configuring two LND nodes**
 
 **Step 1a**
 
@@ -338,8 +330,6 @@ _This is the end of the first part of the series. we'll be going over some preli
 
 ---
 
-**📜 Conclusion**
-
-![](https://media.giphy.com/media/NGp9QCXJcBPuU/giphy.gif?cid=ecf05e47exfrojy6gh0sjqtulw21a6ki0x6pi40miu7o0q7m&ep=v1_gifs_search&rid=giphy.gif&ct=g)
+**Conclusion**
 
 you feel rushed, don't you? Don't worry It took me close to a week to understand this so it's fine if you don't entirely get what's going on for now. check out some of these useful links below [chainquery: bitcoin-cli documentation](https://chainquery.com/bitcoin-cli)

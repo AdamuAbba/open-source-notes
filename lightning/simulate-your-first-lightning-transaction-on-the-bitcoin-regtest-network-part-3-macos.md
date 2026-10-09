@@ -1,4 +1,4 @@
-### 📜Objective
+### Objective
 
 The goal of this article is to help you
 
@@ -12,11 +12,9 @@ The goal of this article is to help you
 - Close the payment channels, kill both Bitcoin and lightning daemons
 - Celebrate the success of this tutorial with a cold bottle of beer.
 
-### 📜 Introduction
+### Introduction
 
 Hey there, welcome to the final part of this 3 part series on simulating your first lightning transaction.
-
-![dancing](https://media.giphy.com/media/xTiTnsltQpb2MX3RDy/giphy.gif)
 
 If you are as happy as I am to finally wrap up the series, let's get right to it....
 
@@ -24,14 +22,14 @@ If you are as happy as I am to finally wrap up the series, let's get right to it
 
 To be successful in this tutorial in case if you haven't already gone through the previous parts leading up to this one, ensure you;
 
-- ✅ checkout [Part 1](https://shyxperience.hashnode.dev/simulate-your-first-lightning-transaction-on-the-bitcoin-regtest-network-part-1-macos)
-- ✅ checkout [Part 2](https://shyxperience.hashnode.dev/simulate-your-first-lightning-transaction-on-the-bitcoin-regtest-network-part-2-macos)
-- ✅ Have a running Bitcoin network daemon (on regtest)
-- ✅ Have two active and running lightning node instances as lnd1 and lnd2
+- checkout [Part 1](https://shyxperience.hashnode.dev/simulate-your-first-lightning-transaction-on-the-bitcoin-regtest-network-part-1-macos)
+- checkout [Part 2](https://shyxperience.hashnode.dev/simulate-your-first-lightning-transaction-on-the-bitcoin-regtest-network-part-2-macos)
+- Have a running Bitcoin network daemon (on regtest)
+- Have two active and running lightning node instances as lnd1 and lnd2
 
 If the above prerequisites list has been satisfied then you can proceed beyond this point.
 
-### 📜 Connect the lightning nodes to form a peer
+### Connect the lightning nodes to form a peer
 
 Now that both of our nodes are ready for some action, we need to connect them to form a `peer-to-peer` network this would enable our nodes to communicate with each other on the network by opening and closing channels.
 
@@ -47,7 +45,7 @@ lncli1 listpeers
 
 ```json
 {
-  "peers": [] //👈🏿 no peers for now...let's fix that.
+  "peers": [] // no peers for now...let's fix that.
 }
 ```
 
@@ -65,7 +63,7 @@ lncli2 getinfo
 {
     "version":  "0.17.0-beta commit=fn/v1.0.1-85-ge31d15989",
     "commit_hash":  "e31d1598932a814c2d44b774e5110746295df711",
-    "identity_pubkey":  "024baa5e16c118f42cddd95fd828b32fa8dfcfea55fa384e89e2da0f3b96fc4579",//👈🏿 copy this
+    "identity_pubkey":  "024baa5e16c118f42cddd95fd828b32fa8dfcfea55fa384e89e2da0f3b96fc4579",// copy this
     "alias":  "024baa5e16c118f42cdd",
 ...
 }
@@ -82,7 +80,7 @@ Now let's connect `lnd2` to `lnd1` by passing the `identity_pubkey`, `IP address
 **output:**
 
 ```json
-{} //👈🏿 don't worry this is the correct output.
+{} // don't worry this is the correct output.
 ```
 
 Let's check for the list of peers once again at `lnd1`
@@ -112,11 +110,9 @@ Let's check for the list of peers once again at `lnd1`
 }]}
 ```
 
-🎉 Both Nodes are now successfully connected as a `peer` on our local lightning network.
+Both Nodes are now successfully connected as a `peer` on our local lightning network.
 
-![connected](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXp2YjhrODg5d21hMGM2MDhiM25iajh1enJsZ3R2aHBmNzV6c3N1aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/DoWqmz4TGL3Tk9jwTZ/giphy.gif)
-
-### 📜 Open a payment channel between `lnd1` and `lnd2` nodes
+### Open a payment channel between `lnd1` and `lnd2` nodes
 
 Now let's open up a `payment channel` between `lnd1` and `lnd2`
 
@@ -138,9 +134,11 @@ To create a payment channel between `lnd1` and `lnd2`, we'll be making use of th
 }
 ```
 
-### 📜 Mine some blocks to increase the confirmations for the Channel opening transaction
+### Mine some blocks to increase the confirmations for the Channel opening transaction
 
 Once the channel has been created and `lnd1's` BTC contribution has been added to the channel, we need to mine/generate some blocks to increase confirmations for the Channel opening transaction.
+
+LND won't use a channel until its funding transaction has a few confirmations (three by default). Until then, the channel only shows up under `lncli1 pendingchannels`.
 
 **command:**
 
@@ -163,7 +161,7 @@ Once the channel has been created and `lnd1's` BTC contribution has been added t
 }
 ```
 
-### 📜 Check the list of channels
+### Check the list of channels
 
 Run the command below to check the list of active channels and to confirm that the channel between both nodes is well-funded and ready.
 
@@ -198,7 +196,9 @@ Run the command below to check the list of active channels and to confirm that t
 }
 ```
 
-### 📜 Create an invoice on `lnd2`
+Take a look at the balances. The channel holds 100,000 sats, but `local_balance` is only 96,530. `lnd1` opened the channel, so it pays the 3,140-sat `commit_fee`. The last 330 sats go to an anchor output, a tiny output that lets the commitment transaction be fee-bumped later if needed. Also notice that `remote_balance` is 0. All the money starts on `lnd1`'s side, so right now `lnd1` can pay `lnd2`, but `lnd2` can't pay `lnd1` anything yet.
+
+### Create an invoice on `lnd2`
 
 Now that we have confirmed that our channel is ready for transactions, let's go ahead and create a payable invoice for an amount of `50,000 SAT` on `lnd2`
 
@@ -214,10 +214,12 @@ Now that we have confirmed that our channel is ready for transactions, let's go 
 {
   "r_hash": "28f35ccf79cfc8545351ae362b4fdb0f85437ddf452c1aebd399227607e0eb6e",
   "payment_request": "lnbcrt500u1pja5y06pp59re4enmeely9g5634cmzkn7mp7z5xlwlg5kp467nny38vplqadhqdqqcqzzsxqyz5vqsp58p5xllcxwt76rt7hjtjwuec2n5sfgv2t9kkc6vplrhsk2edj6ndq9qyysgqs8aysfmfz60jexh03kq27cmpym5qw8hw55wac4mqmj6t684t48u89kqaw0m7y0xuyygh5uuj95643gde3vse7zxgtu4aycfwfwk5z3cqfwmtp7",
-  "add_index": "1", //👈🏿 total amount of invoices created.
+  "add_index": "1", // total amount of invoices created.
   "payment_addr": "38686fff0672fda1afd792e4ee670a9d2094314b2dad8d303f1de16565b2d4da"
 }
 ```
+
+The `payment_request` is the invoice you'd normally see as a QR code, and its first few characters already tell you a lot. `ln` means lightning, `bcrt` means Bitcoin regtest, and `500u` is the amount: 500 micro-bitcoin, which is 50,000 sats.
 
 Let's quickly inspect or confirm the details of this newly created invoice from `lnd1` by making use of the invoice's `payment_request`
 
@@ -255,11 +257,9 @@ Let's quickly inspect or confirm the details of this newly created invoice from 
 }
 ```
 
-### 📜 Pay or satisfy the invoice created by `lnd2` via `lnd1`
+### Pay or satisfy the invoice created by `lnd2` via `lnd1`
 
-Time for `lnd1` to pay up 🧾
-
-![payment](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYzlkM2NvbDZldG85amw5b2t5ZHdrbXViYXg0bHRld282NDRuZG82cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZNnnp4wa17dZrDQKKI/giphy.gif)
+Time for `lnd1` to pay up
 
 Run the command below and follow the prompts to confirm payment
 
@@ -288,6 +288,10 @@ Payment hash: 28f35ccf79cfc8545351ae362b4fdb0f85437ddf452c1aebd399227607e0eb6e
 Payment status: SUCCEEDED, preimage: 071ae531770166a26d7b42a82a6215776a4f90f1e9935c1f225077158b3782c9
 ```
 
+How does `lnd1` know the payment really arrived? When `lnd2` created the invoice, it made up a secret called the preimage and put its hash, the `r_hash`, in the invoice. The payment only completes once `lnd2` reveals the preimage, and anyone can check that hashing it gives the `r_hash`. The preimage works as the receipt.
+
+The fee was 0 because the payment went straight through our own channel, with no other nodes to pay along the way. Nothing touched the blockchain either. `lnd1`'s side of the channel dropped by 50,000 sats and `lnd2`'s side went up by 50,000.
+
 Now that we have made payment, let's look up the invoice on `lnd2` we'll be using the `payment hash` above
 
 **command:**
@@ -305,7 +309,7 @@ Now that we have made payment, let's look up the invoice on `lnd2` we'll be usin
     "r_hash":  "28f35ccf79cfc8545351ae362b4fdb0f85437ddf452c1aebd399227607e0eb6e",
     "value":  "50000",
     "value_msat":  "50000000",
-    "settled":  true,// 👈🏿 the invoice has been fulfilled ✅
+    "settled":  true,// the invoice has been fulfilled
     "creation_date":  "1708790266",
     "settle_date":  "1708793723",
     "payment_request":  "lnbcrt500u1pja5y06pp59re4enmeely9g5634cmzkn7mp7z5xlwlg5kp467nny38vplqadhqdqqcqzzsxqyz5vqsp58p5xllcxwt76rt7hjtjwuec2n5sfgv2t9kkc6vplrhsk2edj6ndq9qyysgqs8aysfmfz60jexh03kq27cmpym5qw8hw55wac4mqmj6t684t48u89kqaw0m7y0xuyygh5uuj95643gde3vse7zxgtu4aycfwfwk5z3cqfwmtp7",
@@ -318,11 +322,9 @@ Now that we have made payment, let's look up the invoice on `lnd2` we'll be usin
 }
 ```
 
-### 📜 Close the payment channel, kill both Bitcoin and lightning daemons
+### Close the payment channel, kill both Bitcoin and lightning daemons
 
 _"Eventually, all good things must come to an end"_
-
-![explosion](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWlvMWU2bmo4a281dXVhdXNqdDJmdjhqeWxtNDBzdzc3NmFwNHRteCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oEhmVQaCjPOJJQgG4/giphy.gif)
 
 We are finally done with all lightning transactions so let's go ahead and close the payment channel and kill all running lightning and Bitcoin daemons as we close for the day.
 
@@ -345,6 +347,8 @@ Run the command below from any of the two nodes
 }
 ```
 
+Closing is the one step that goes back on-chain. The `closing_txid` is a normal Bitcoin transaction that pays each node its final balance. `lnd2` gets its 50,000 sats, and `lnd1` gets the rest of the 100,000, minus the closing fee. Until a block confirms it, the channel sits under `pendingchannels` as waiting to close.
+
 Check the list of channels
 
 **command:**
@@ -357,7 +361,7 @@ Check the list of channels
 
 ```json
 {
-  "channels": [] //👈🏿 no active channel
+  "channels": [] // no active channel
 }
 ```
 
@@ -375,10 +379,8 @@ Run the command below to kill all running daemons
 Bitcoin Core stopping
 ```
 
-### 📜 Conclusion
+### Conclusion
 
 Finally, an amazing end to a three part journey.
 
-![happy](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2Rya2p1OGxoY2hkMTVuYXNkOWlzNG5sc2M2Mzg2eWk3NG1xMWE5NCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l41lI4bYmcsPJX9Go/giphy.gif)
-
-I hope this article helped you gain some hands-on experience in working with the lightning network. Remember, Lightning payments are faster, cheaper and less complex than the conventional bitcoin transaction. see you in the next one 👋🏿
+I hope this article helped you gain some hands-on experience in working with the lightning network. Remember, Lightning payments are faster, cheaper and less complex than the conventional bitcoin transaction. see you in the next one
