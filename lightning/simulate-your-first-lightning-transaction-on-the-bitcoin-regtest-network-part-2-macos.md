@@ -39,7 +39,7 @@ To confirm that our settings are correct to spin up the required Bitcoin network
 **Command:**
 
 ```zsh
-nvim /Users/user/Library/Application Support/Bitcoin/bitcoin.conf
+nvim "/Users/user/Library/Application Support/Bitcoin/bitcoin.conf"
 ```
 
 **Output:**
@@ -240,9 +240,9 @@ lncli1 newaddress np2wkh
 
 > Quick note: `np2wkh` stands for nested pay-to-witness-key-hash, the Nested SegWit (P2SH) address type. On mainnet these addresses start with `3`, while on regtest and testnet they start with `2`, which is why ours does.
 
-Let's load up our Bitcoin wallet from the previous tutorial, send some juicy `100` Bitcoin from it to our lightning address above and then generate some blocks to give it some confirmations
+Let's load up our Bitcoin wallet from the previous tutorial, send some juicy `10` Bitcoin from it to our lightning address above and then generate some blocks to give it some confirmations
 
-_"my oh my!!, what a man could do with some real `100` btc just sitting in a wallet. Alight alright that's enough buddy, don't be weird let's get back to the article."_
+_"my oh my!!, what a man could do with some real `10` btc just sitting in a wallet. Alight alright that's enough buddy, don't be weird let's get back to the article."_
 
 Run the commands below in sequence
 
@@ -263,7 +263,7 @@ bitcoin-cli loadwallet my_first_regtest_wallet
 **command 2:**
 
 ```zsh
-bitcoin-cli sendtoaddress 2N5qZ8TNWbrkaYxmsLYjEd8g6U7CrjDfHky 100
+bitcoin-cli sendtoaddress 2N5qZ8TNWbrkaYxmsLYjEd8g6U7CrjDfHky 10
 ```
 
 **output:**
@@ -303,21 +303,21 @@ lncli1 walletbalance
 
 ```json
 {
-  "total_balance": "10000000000", // sweet, our wallet was credited successfully
-  "confirmed_balance": "10000000000",
+  "total_balance": "1000000000", // sweet, our wallet was credited successfully
+  "confirmed_balance": "1000000000",
   "unconfirmed_balance": "0",
   "locked_balance": "0",
   "reserved_balance_anchor_chan": "0",
   "account_balance": {
     "default": {
-      "confirmed_balance": "10000000000",
+      "confirmed_balance": "1000000000",
       "unconfirmed_balance": "0"
     }
   }
 }
 ```
 
-LND shows balances in satoshis, so `10000000000` sats is exactly the 100 BTC we sent (1 BTC = 100,000,000 sats). If `confirmed_balance` is still 0, give the node a moment to catch up. Once `synced_to_chain` in `lncli1 getinfo` flips to `true`, the balance should show.
+LND shows balances in satoshis, so `1000000000` sats is exactly the 10 BTC we sent (1 BTC = 100,000,000 sats). If `confirmed_balance` is still 0, give the node a moment to catch up. Once `synced_to_chain` in `lncli1 getinfo` flips to `true`, the balance should show.
 
 ### Prepare the second lightning node aka `lnd2` for some action
 

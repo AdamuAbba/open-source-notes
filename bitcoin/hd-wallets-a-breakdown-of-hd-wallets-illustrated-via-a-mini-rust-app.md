@@ -16,7 +16,6 @@ The goal of this article to help you
 ## Requirements
 
 - Some understanding of the Bitcoin ecosystem
-- A working installation of [Bitcoin core](https://github.com/bitcoin/bitcoin/blob/master/doc/build-unix.md)
 - Some basic basic knowledge of the Rust Language
 - The rust installed and configured on your machine
 
@@ -94,7 +93,7 @@ _source: [FoxWallet](https://medium.com/@FoxWallet/bip32-bip39-and-bip44-explain
 Enough theory, let's put BIP39, BIP32 and BIP44 to work. From inside the `shy-bit-rust` directory, add the two crates we need: `bip39` for the mnemonic, and `bitcoin` for deriving keys and addresses.
 
 ```zsh
-cargo add bip39 --features rand
+cargo add bip39@3 --features rand
 cargo add bitcoin@0.32
 ```
 
@@ -103,14 +102,14 @@ Now replace everything in `src/main.rs` with the code below
 ```rust
 use std::str::FromStr;
 
-use bip39::Mnemonic;
+use bip39::{Mnemonic, WordCount};
 use bitcoin::bip32::{DerivationPath, Xpriv};
 use bitcoin::secp256k1::Secp256k1;
 use bitcoin::{Address, CompressedPublicKey, Network};
 
 fn main() {
     // BIP39: 12 random words -> a 64-byte seed
-    let mnemonic = Mnemonic::generate(12).expect("12 is a valid word count");
+    let mnemonic = Mnemonic::generate(WordCount::Words12).expect("12 words is a valid length");
     println!("Mnemonic: {mnemonic}");
     let seed = mnemonic.to_seed("");
 
@@ -131,7 +130,7 @@ fn main() {
 
 Here's what's going on, one standard at a time:
 
-- **BIP39:** `Mnemonic::generate(12)` picks 128 random bits and turns them into 12 words. `to_seed("")` then stretches those words into a 64-byte seed. The empty string is the optional passphrase, which we're skipping.
+- **BIP39:** `Mnemonic::generate(WordCount::Words12)` picks 128 random bits and turns them into 12 words. `to_seed("")` then stretches those words into a 64-byte seed. The empty string is the optional passphrase, which we're skipping.
 - **BIP32:** `Xpriv::new_master` turns the seed into the master private key, the `m` at the start of every path. The `X` stands for "extended". Besides the key itself, it carries a chain code, and that's what lets it produce child keys.
 - **BIP44:** the loop walks `m/44'/0'/0'/0/i` for `i` = 0, 1 and 2, meaning purpose 44, coin 0 (Bitcoin), account 0, the receiving chain, and address number `i`. Each child private key gives a public key, and each public key gives an address. BIP44 addresses are legacy (P2PKH), which is why they start with `1`.
 
@@ -146,7 +145,7 @@ m/44'/0'/0'/0/1  ->  19P1fcg76d9d61HAcaSL1U4kJvZqwUubVT
 m/44'/0'/0'/0/2  ->  162Xcvo6DhJgZ9fQ16hyPvf265LKD83cSP
 ```
 
-Your words and addresses will be different, because the mnemonic is random every time. To check the code is right, swap `Mnemonic::generate(12)` for `Mnemonic::parse(...)` with the standard test phrase `abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about`. Your first address should then be `1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA`, the same one every BIP44 wallet derives from that phrase.
+Your words and addresses will be different, because the mnemonic is random every time. To check the code is right, swap `Mnemonic::generate(WordCount::Words12)` for `Mnemonic::parse(...)` with the standard test phrase `abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about`. Your first address should then be `1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA`, the same one every BIP44 wallet derives from that phrase.
 
 > Quick Note: these are real mainnet addresses, but the mnemonic was just printed to your terminal. Never send real bitcoin to them.
 
@@ -180,7 +179,7 @@ On big and obvious concern of working with HD wallets is the fact that the secur
 
 ## Conclusion
 
-In this aticle we have touched on just 3 out of 389 existing Bips to give you a general view of some of the improvements that have gone into HD wallets over the years to make them more efficient and secure
+In this aticle we have touched on just 3 out of more than 200 BIPs to give you a general view of some of the improvements that have gone into HD wallets over the years to make them more efficient and secure
 
 ## useful links
 

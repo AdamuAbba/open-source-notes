@@ -80,7 +80,9 @@ Now let's connect `lnd2` to `lnd1` by passing the `identity_pubkey`, `IP address
 **output:**
 
 ```json
-{} // don't worry this is the correct output.
+{
+    "status": "connection to 024baa5e16c118f42cddd95fd828b32fa8dfcfea55fa384e89e2da0f3b96fc4579@127.0.0.1:9734 initiated"
+}
 ```
 
 Let's check for the list of peers once again at `lnd1`
@@ -328,7 +330,7 @@ _"Eventually, all good things must come to an end"_
 
 We are finally done with all lightning transactions so let's go ahead and close the payment channel and kill all running lightning and Bitcoin daemons as we close for the day.
 
-Run the command below from any of the two nodes
+Run the command below from any of the two nodes, and type `yes` when it asks whether you really want to close all channels
 
 **command:**
 

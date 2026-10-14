@@ -91,7 +91,7 @@ The Original, the plain signed payment from Part 1, is what makes this safe. Bec
 
 ## Older wallets
 
-A wallet that only knows BIP 78 can still pay a BIP 77 request. It sends a plain draft to the mailbox address, and the directory keeps that connection open until Bob replies. That comes with two costs. Bob has to be online within that short window, and without the sealed envelope the directory can read, and potentially change, the drafts.
+If Bob's wallet chooses to accept them, a wallet that only knows BIP 78 can still pay a BIP 77 request. It sends a plain draft to the mailbox address, and the directory holds that connection open for up to 30 seconds while it waits for Bob's reply. That comes with two costs. Bob has to be online within that 30-second window, and without the sealed envelope the directory can read, and potentially change, the drafts.
 
 That second cost is why the QR code includes `pjos=0`. It stops Bob from changing the address his output pays to. If the directory tried to swap in its own address, Alice's wallet would spot the change and refuse to sign.
 

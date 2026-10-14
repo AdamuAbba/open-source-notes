@@ -87,7 +87,8 @@ Before signing again, Alice's wallet checks that Bob stayed inside the lines:
 - **The payment is the same:** she's still paying 50,000.
 - **The fee stayed in bounds:** her change dropped by no more than 680 sats.
 - **Nothing was added:** there are no surprise outputs.
-- **Bob's coin blends in:** it's the same script type as hers. Mixing, say, SegWit and Taproot inputs is a giveaway that two wallets were involved.
+
+Ideally, Bob's coin is also the same script type as hers. BIP 78 used to require this, and relaxed it in 2024, but mixing, say, SegWit and Taproot inputs is still a giveaway that two wallets were involved.
 
 If anything fails, she broadcasts the Original instead. Alice never has to trust Bob, because she checks his work.
 

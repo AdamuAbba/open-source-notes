@@ -4,14 +4,14 @@ The goal of this article is to help you
 
 - Get a rough view of what a cryptocurrency is.
 - Gain some foundational understanding of What Bitcoin is
-  - make sense of the name `Satoshi Nakomoto` (unfortunately the name of an anime protagonist)
+  - make sense of the name `Satoshi Nakamoto` (unfortunately the name of an anime protagonist)
   - understand some Bitcoin terminologies
 - understand the difference between Bitcoin and bitcoin
 - understand Bitcoin wallets
 - understand Bitcoin addresses
   - Hashing
   - Legacy (P2PKH)
-  - Nested SigWit (P2SH)
+  - Nested SegWit (P2SH)
   - Native SegWit (Bech32)
   - Taproot (P2TR)
 
@@ -37,7 +37,7 @@ After asking Google the same question I got this:
 
 > _"Satoshi Nakamoto is the name used by the presumed pseudonymous person or persons who developed Bitcoin, authored the bitcoin white paper, and created and deployed bitcoin's original reference implementation."_[Wikipedia](https://en.wikipedia.org/wiki/Satoshi_Nakamoto)
 
-I believe the developer or developers of bitcoin maintained anonymity for a good cause, seeing as the Bitcoin infrastructure promotes heavy anonymity by obfuscating various data on the network via encryption it maybe wouldn't have made sense to have attached a face to the invention. But don't take my word for it, I'm also a dummy trying to understand Bitcoin.
+I believe the developer or developers of bitcoin maintained anonymity for a good cause. Bitcoin itself is pseudonymous rather than anonymous: every transaction is public, and only the people behind the addresses are hidden. Maybe it just wouldn't have made sense to attach a face to the invention. But don't take my word for it, I'm also a dummy trying to understand Bitcoin.
 
 # A definition of sorts
 
@@ -51,8 +51,6 @@ Well, it's a market that provides a platform for customers to swap one cryptocur
 
 Owing to my explanation above, `bitcoin (BTC)` is simply the currency or `native token` used in transactions on a cool type of network that connects computers/nodes to form peers called a `peer-to-peer network`. What makes this type of network cool is that all participating nodes have the liberty to verify transactions and add them into a `book of records` or you can call it a `ledger` as part of a collection of other transactions called a `block` which is then append it to the end of another `Block` to form `a chain of blocks`. hence the name `blockchain`.
 
-> Quick Note: for clarity, `Transactions` are grouped into `Blocks` which are then appended to the previous block to form a `Blockchain`
-
 - A `node` is any computer on the Bitcoin network which by default has the exact copy of the entire blockchain data
 - A `block` is a record made up of a collection of transactions and meta-data grouped together as a single entity
 
@@ -60,34 +58,34 @@ Owing to my explanation above, `bitcoin (BTC)` is simply the currency or `native
 
 A compendium of all these concepts and technologies that facilitate the execution of activities on the `blockchain` can be referred to as `Bitcoin`.
 
-> Quick note: Going forward, i will be referring to the bitcoin cryptocurrency as BTC for ease of identification and understanding and it's shorter to write.
+> Quick note: going forward, I'll call the bitcoin cryptocurrency BTC because it's shorter to write.
 
 # Bitcoin Wallets
 
-Just like with conventional wallets, A Bitcoin wallet stores BTC you have `ownership` of. It is a single source of truth for determining your BTC balance and spending from the balance and also adding to the balance via a special set of alphanumeric characters called an `Address`. Lastly, a bitcoin wallet can either be a physical device like a USB drive, SSD, or HDD, or it can also be a computer program.
+A Bitcoin wallet doesn't actually hold coins. They live on the blockchain, and the wallet stores the keys that prove your `ownership` of them. It is a single source of truth for determining your BTC balance and spending from the balance and also adding to the balance via a special set of alphanumeric characters called an `Address`. Lastly, a bitcoin wallet can either be a physical device like a USB drive, SSD, or HDD, or it can also be a computer program.
 
 # Bitcoin Addresses
 
-Let's quickly talk about `hashing`. Hashing is a cryptographic process of passing a set of data through a secure hash algorithm to produce an encrypted value called a `Digest`.
+Let's quickly talk about `hashing`. Hashing is a cryptographic process of passing a set of data through a secure hash algorithm to produce a fixed-length value called a `Digest`. Unlike encryption, hashing only goes one way: you can't turn a digest back into the original data.
 
 ![Hashing](https://www.simplilearn.com/ice9/free_resources_article_thumb/hashing1.PNG)
 _source: simplilearn_
 
 On a more technical level, a Bitcoin wallet is a database file that contains a set of digital keys mathematically related to each other. they are key pairs that serve as
 
-- A public id that serves as what you would call a bank account number in the centralized space. it is called a `Public key` and is used to receive and send BTC on the network
+- A public id that serves as what you would call a bank account number in the centralized space. it is called a `Public key` and your addresses are made from it, so people can send BTC to you
 - A private ID (`Private Key`) which is more or less a `PIN`. It is a secret set of alphanumeric characters that is used to generate `digital signatures` for the sake of transaction validation.
 
 > Quick Note: the public/private key value pairs are generated through a cryptographic algorithm called an `Elliptic curve cryptographic function`. if you care to read more about it and lose a little bit of your sanity then check out [Elliptic Curve Cryptography Explained](https://learn.saylor.org/mod/book/view.php?id=36353#:~:text=to%20generate%20addresses.-,Elliptic%20Curve%20Cryptography%20Explained,-Elliptic%20curve%20cryptography).
 
-Bitcoin Addresses are generated from a public key via a `one-way cryptographic hashing algorithm` and are about 26 to 35 characters long.
+Bitcoin Addresses are generated from a public key via a `one-way cryptographic hashing algorithm`. Legacy addresses like the one below are about 26 to 35 characters long; SegWit and Taproot ones are longer.
 
 The algorithms mentioned above leverages on `double-hashing`:
 
 - Secure Hash Algorithm (SHA256)
 - RACE Integrity Primitives Evaluation Message Digest (RIPEMD160)
 
-And the final `digest` is passed through Base58Check encoding to improve the human readability of the final address
+Finally, a version byte (`0x00` for legacy addresses) is added to the front of the `digest`, and the result is passed through Base58Check encoding, which adds a checksum and improves readability
 
 Mathematically:
 
@@ -96,13 +94,13 @@ Mathematically:
 
 Digest = SHA256(PublicKey)
 DigestTwo = RIPEMD160(Digest)
-finalAddress = Base58Check(DigestTwo) //encoding
+finalAddress = Base58Check(0x00 + DigestTwo) //version byte + encoding
 ```
 
-Now that we have gone over how to create a Bitcoin address, below is are the different types of Bitcoin address:
+Here are the different types of Bitcoin address:
 
 - Legacy (P2PKH)
-- Nested SigWit (P2SH)
+- Nested SegWit (P2SH)
 - Native SegWit (Bech32)
 - Taproot (P2TR)
 

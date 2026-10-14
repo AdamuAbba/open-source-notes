@@ -4,7 +4,7 @@ The goal of this article is to help you
 
 - understand the various types of Bitcoin addresses and their impact on transactions
   - Legacy (P2PKH)
-  - Nested SigWit (P2SH)
+  - Nested SegWit (P2SH)
   - Native SegWit (Bech32)
   - Taproot (P2TR)
 
@@ -18,13 +18,13 @@ Now let's get to it shall we?
 
 ### Understanding Bitcoin addresses
 
-Now we know that the Bitcoin address is a fundamental part of the Bitcoin ecosystem that ensures transaction validations, generation of digital signatures and a host of important functionalities. Owing to the importance of Bitcoin addresses, over the years there have been multiple updates via soft forks to the Bitcoin network that have added improvements to Bitcoin addresses and their impact on the Bitcoin network.
+Now we know that the Bitcoin address is a fundamental part of the Bitcoin ecosystem: it tells people where to send BTC, and it decides what a spender has to prove, usually a digital signature, before those coins can move. Owing to the importance of Bitcoin addresses, over the years there have been multiple updates via soft forks to the Bitcoin network that have added improvements to Bitcoin addresses and their impact on the Bitcoin network.
 
 ### Why do we have different Bitcoin address types?
 
 Have you ever wondered why there are multiple Bitcoin addresses and what improvements they bring into the Bitcoin ecosystem?. Keep reading for a brief breakdown.
 
-Well around 2016 and 2017, there was a discussion or debate around the Bitcoin `Block size` which was `1 mb` per block and so only a limited amount of transactions could be added to a block. The accepted solution was to take a part of the transaction called the `witness data` and move it to a second layer on the blockchain there by allowing more space for transactions on the main block and increasing the block size naturally allowing more transactions to fit into a block.
+Well around 2016 and 2017, there was a discussion or debate around the Bitcoin `Block size` which was `1 mb` per block and so only a limited amount of transactions could be added to a block. The accepted solution, called SegWit, separated a part of the transaction called the `witness data` (mostly signatures) and counted it at a discount. The witness data still sits in the same block, but blocks are now measured in `weight`, up to 4 million weight units, which lets more transactions fit into a block.
 
 Now Let's do a quick walkthrough of the various Bitcoin addresses with some quick facts.
 
@@ -37,8 +37,8 @@ Quick Facts
 - They are accountable, stable and universally supported.
 - Transactions via Legacy addresses have are large in size, meaning they take up more block space.
 - transactions from Legacy addresses have high transaction fees due to the size of the transactions
-- Legacy addresses are `not` SegWit compatible what this means is that on the Bitcoin network, only Legacy addresses can carry out transactions with with each other i'e send and and receive BTC.
-- Legacy addresses have long transaction processing times.
+- Legacy addresses are `not` SegWit addresses, so they miss out on SegWit's lower fees. They can still send BTC to, and receive BTC from, every other address type.
+- Legacy transactions confirm just as fast as any other type at the same fee rate. They just cost more, because they're bigger.
 
 ### Nested SegWit a.k.a Pay-to-Script-Hash (P2SH)
 
@@ -48,28 +48,28 @@ Nested SegWit was launched around 2017 and it basically reduced the size of each
 
 Quick Facts
 
-- They have cheeper transaction fees and enhanced security over `Legacy addresses` thy achieve this through multi-signature capabilities.
+- They have cheaper transaction fees than `Legacy addresses`. They use the P2SH format from 2012, the same format that made multi-signature addresses possible, which is why they start with `3`.
 - Nested SegWit addresses have cross compatibility meaning transactions can be carried out between Nested SegWit and other types of Bitcoin Addresses.
-- The introduction and implementation of Nested SegWit gave birth to the Lightning Network
+- SegWit, which Nested SegWit addresses made usable by older wallets, fixed a bug called transaction malleability. That fix is what made the Lightning Network practical.
 
 ### Native SegWit a.k.a pay-to-witness-public-key-hash (Bech32)
 
-This type of Bitcoin address has a prefix of "bc1q" and it is an upgrade to the Nested SegWit. It is also compatible with most wallets and exchanges by default. Native SegWit has a primary focus on weight efficiency, which brings about a reduction in the weight of Bitcoin blocks and this weight reduction naturally translates to faster transaction speeds, which enhances the network’s scalability and further lowers the transaction fees.
+This type of Bitcoin address has a prefix of "bc1q" and it is an upgrade to the Nested SegWit. It is also compatible with most wallets and exchanges by default. Native SegWit has a primary focus on weight efficiency, which brings about a reduction in the weight of Bitcoin blocks and this weight reduction lets more transactions fit into each block, which enhances the network’s scalability and further lowers the transaction fees.
 
 Quick Facts
 
-- Native SegWit Bitcoin addresses are in lowercase for enhanced readability and better error detection
+- Native SegWit Bitcoin addresses are written in lowercase by convention, which makes them easier to read. Their built-in checksum is what catches typos: change one character and wallets reject the address.
 
 ### Taproot a.k.a Pay-to-Taproot (P2TR)
 
 `Taproot` is by far one of the coolest things to have ever happened to the Bitcoin ecosystem.
 
-This Bitcoin Address type has a prefix pf "bc1p" and has the lowest transaction fees of all existing Bitcoin Address types. Taproot (P2TR) is a new address format that was introduced in 2021 as an update to the Segwit address type. One major shift in the dynamics of bitcoin addresses via Taproot is that it implements the `Schnorr digital signature` which is a shift from the conventional `Elliptic curve digital signature algorithm` previous bitcoin address types have of used for years.
+This Bitcoin Address type has a prefix pf "bc1p" and is the cheapest address type to spend from in a standard single-signature wallet. Its outputs are slightly bigger, though, so an everyday payment costs about the same as with Native SegWit. Taproot (P2TR) is a new address format that was introduced in 2021 as an update to the Segwit address type. One major shift in the dynamics of bitcoin addresses via Taproot is that it implements the `Schnorr digital signature` which is a shift from the conventional `Elliptic curve digital signature algorithm` previous bitcoin address types have of used for years.
 
 Quick Facts
 
 - Taproot aims to make bitcoin transactions cheeper, more efficient, private and also unlocks the potential of smart contracts on the bitcoin network via a couple of new implementations one of which is a system called the `Merklized Abstract Syntax Trees (MAST)` which enables conditions placed on a transaction to be condensed and hashed into one script.
-- The `Schnorr digital signatures` which Taproot makes use of allows for transaction grouping. what this means is that multiple transactions from a bitcoin wallet can be hashed together and assigned a unique key. Simple and complex transactions containing multiple signatures would naturally be indistinguishable via this hashing.
+- The `Schnorr digital signatures` which Taproot makes use of allow several keys, and their signatures, to be combined into one. A multi-signature wallet spending this way looks exactly like a single-signature one on the blockchain, so simple and complex transactions become indistinguishable.
 
 Quick Link: [https://tara-annison.medium.com/what-are-taproot-mast-and-schnorr-signatures-b737dae20681](https://tara-annison.medium.com/what-are-taproot-mast-and-schnorr-signatures-b737dae20681)
 
