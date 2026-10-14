@@ -3,13 +3,13 @@
 The goal of this article to help you
 
 - Install and Setup your rust environment
-- Learn how to build a very simple rust CLI app to help us understand Bitcoin HD wallet
+- Learn how to build a very simple rust app to help us understand Bitcoin HD wallet
 - Learn about HD wallets
 - Advantages and Disadvantages of HD wallets
 - Learn a bit about Bip32 and a few it's underlying standards and improvements
   - Bip39
   - Bip44
-- Create a HD wallet using the rust CLI app
+- Create a HD wallet using the rust app
 
 # Requirements & specs
 
@@ -31,7 +31,7 @@ The goal of this article to help you
 
 So you recently came across HD wallets and you're a bit curious as to why they are so awesome. furthermore, you're the kind of guy looking for a mini pet rust project to get your hands dirty with some bitcoin rust development. If that sounds like you then you've come to to the right place.
 
-# Setting up your rust and bootstrapping your CLI app
+# Setting up your rust and bootstrapping your app
 
 setting up rust on your machine can be done via [rustup](https://rustup.rs/) and is as easy as running the command bellow and following through the prompts if you are on an ubuntu machine or a Mac
 
